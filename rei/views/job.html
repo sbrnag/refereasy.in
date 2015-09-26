@@ -1,0 +1,15 @@
+<div>
+
+<div ng-show="signedIn() && currentUser.uid == selectedJob.$id">
+	Routed from my jobs
+</div>
+
+<div ng-show="signedIn() && currentUser.uid != selectedJob.$id">
+	Routed from Browse Jobs
+</div>
+
+<div ng-show="!signedIn()">
+	Routed from outside
+</div>
+
+</div>

@@ -1,0 +1,35 @@
+<div class="modal fade" id="posModal" ng-controller="PopUpController">
+  <div class="modal-dialog">
+    <div class="modal-content">      
+
+      <div class="panel panel-warning title">
+
+        <div class="panel-heading title">            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
+            <h3 class="panel-title">Post Job</h3>
+        </div>
+
+        <div class="panel-body">
+          <form ng-submit="postJob()">   
+            <input ng-model="job.title" class="form-control" placeholder="Title" required>
+            <br>           
+            <input type="text" ng-model="job.skills" class="form-control" placeholder="Skills" required>
+            <br>          
+            <input type="number" ng-model="job.exp" class="form-control" placeholder="Experience in years" required>
+            <br>
+            <input type="text" ng-model="job.location" class="form-control" placeholder="Location" required>
+            <br>
+            <input type="text" ng-model="job.company" class="form-control" placeholder="Company">
+            <br>
+            <input type="number" ng-model="job.expiry" class="form-control" placeholder="Expires in days" required>
+            <br>
+            <!-- <div class="col-xs-3">
+                <div fb-share="myModel.Url"></div>
+            </div> -->
+            <input type="submit" value="Post" class="btn btn-warning">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

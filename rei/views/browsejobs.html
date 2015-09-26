@@ -1,0 +1,78 @@
+
+	<div>
+		<div class="list-group">
+			<!-- SEARCH TOOL -->
+			<div class="row">
+				<div class="col-md-4">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</div>
+				    <input type="text" ng-model="search.skills" class="form-control" placeholder="Skills">
+				   </div>	
+				</div>
+
+				<div class="col-md-4">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</div>
+				    <input type="text" ng-model="search.exp" class="form-control" placeholder="Experience">
+				   </div>	
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</div>
+				    <input type="text" ng-model="search.location" class="form-control" placeholder="Location">
+				   </div>	
+				</div>
+
+				<div class="col-md-4">
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</div>
+				    <input type="text" ng-model="search.company" class="form-control" placeholder="Company">
+				   </div>	
+				</div>
+			</div>
+
+            <!-- TASK LIST -->
+			<div class="row">
+				<div>
+					<table class="table table-condensed">
+				        <tr>
+				        	<th>Reffered By</th><th>Skills</th><th>Experience</th><th>Location</th><th>Company</th>
+				        </tr>
+					    <tr ng-repeat="job in jobs | filter:search | orderBy: 'datetime':true" ng-hide="job.uid == uid" ng-click="jobLink(job.$id)">
+					    	
+							    <td>
+							      	<div class="list-group-item">
+							       		<div class="row-picture">
+					            		   <img class="img-responsive img-circle" ng-src="{{job.gravatar}}">
+					        		    </div> 
+					        		    
+							       	</div>
+							       	<div>
+							       		{{job.poster}} </br>
+					        		    <span class="list-group-item-text">
+								            	<span am-time-ago="job.datetime"></span>
+								        </span>	
+							       	</div>
+							       	
+					    		</td>
+							    <td>{{job.skills}}</td>
+							    <td>{{job.exp}}</td>
+							    <td>{{job.location}}</td>
+							    <td>{{job.company}}</td>
+						</tr>
+			        </table>
+				</div>
+			</div>
+		</div>
+	</div>
