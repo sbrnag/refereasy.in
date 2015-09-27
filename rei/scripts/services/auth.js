@@ -79,7 +79,6 @@ app.factory('Auth',['FURL', '$firebaseAuth', '$firebaseObject', '$rootScope',
     } else {
       if(Auth.user && Auth.user.profile) {
         Auth.user.profile.$destroy();
-        $rootScope.loggedIn = null;
       }
       angular.copy({}, Auth.user);
     }

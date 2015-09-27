@@ -21,20 +21,12 @@ var app = angular
       }
     });
     $rootScope.$on('$locationChangeStart', function(evt, absNewUrl, absOldUrl) {
-      console.log('start', evt, absNewUrl, absOldUrl);
-      if($rootScope.loggedIn == null) {
-         if(absNewUrl.indexOf("browsejobs") > -1 || absNewUrl.indexOf("myjobs") || 
-            absNewUrl.indexOf("job")) {
-            $location.path("/login");
-         }
-      }
+      //console.log('start', evt, absNewUrl, absOldUrl); //debug
+      // For redirecting to the previous view after succesfull login/register
       if(absOldUrl.indexOf("#") > -1) {
         var oldState = absOldUrl.split('#');
         $rootScope.redirectTo = oldState[1]; 
       }       
-    });
-    $rootScope.$on('$locationChangeSuccess', function(evt, absNewUrl, absOldUrl) {
-       console.log('success', evt, absNewUrl, absOldUrl);
     });
     
   })  

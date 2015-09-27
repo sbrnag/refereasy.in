@@ -1,19 +1,11 @@
 app.controller('AuthController',['$scope', '$location', 'toaster', 'Auth', '$routeParams', '$rootScope', 
                          function($scope, $location, toaster, Auth, $routeParams, $rootScope) {
 
-  if(Auth.signedIn()) {
-    $location.path('/');
-  }
-
 	$scope.register = function(user) {   
     Auth.register(user)
       .then(function() {
         toaster.pop('success', "Registered successfully");
-        if($rootScope.redirectTo == '/landing') {
-           $location.path('/browsejobs');
-        } else {
-          $location.path($rootScope.redirectTo);
-        };
+        redirect($rootScope.redirectTo);
       }, function(err) {
         errMessage(err);
       });
@@ -23,12 +15,7 @@ app.controller('AuthController',['$scope', '$location', 'toaster', 'Auth', '$rou
      Auth.login(user)
       .then(function() {
         toaster.pop('success', "Logged in successfully");
-        if($rootScope.redirectTo == '/landing') {
-           $location.path('/browsejobs');
-        } else {
-          $location.path($rootScope.redirectTo);
-        };
-        
+        redirect($rootScope.redirectTo);
       }, function(err) {        
         errMessage(err);
       });    
@@ -38,11 +25,7 @@ app.controller('AuthController',['$scope', '$location', 'toaster', 'Auth', '$rou
      Auth.authWithOAuthPopup('facebook')
       .then(function() {
         toaster.pop('success', "Logged in successfully");
-        if($rootScope.redirectTo == '/landing') {
-           $location.path('/browsejobs');
-        } else {
-          $location.path($rootScope.redirectTo);
-        };
+        redirect($rootScope.redirectTo);
       }, function(err) {        
         errMessage(err);
       });    
@@ -73,6 +56,16 @@ app.controller('AuthController',['$scope', '$location', 'toaster', 'Auth', '$rou
       }, function(err) {
         errMessage(err);      
       });
+  };
+
+  function redirect(redirectTo) {
+      // For the paths Browsejobs, Myjobs and job
+      if(redirectTo.indexOf("job") > -1) {
+          $location.path(redirectTo);
+      } else {
+        //default
+        $location.path('/browsejobs');
+      };
   };
 
 	function errMessage(err) {
