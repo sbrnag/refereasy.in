@@ -1,14 +1,12 @@
 'use strict';
 
-app.controller('BrowseController', ['currentAuth', '$scope', 'toaster', 'Job', '$location', 
-                   function(currentAuth, $scope, toaster, Job, $location) {
+app.controller('BrowseController', ['currentAuth', '$scope', 'toaster', 'Job', '$location',
+                  function(currentAuth, $scope, toaster, Job, $location) {
 
   $scope.currentUser = currentAuth;
   $scope.uid = currentAuth.uid;
   $scope.myJobs = Job.getUserJobs($scope.uid);
   $scope.jobs = Job.all;
-
-  // --------------- JOBS ---------------	
 
   $scope.setSelecetedJob = function(job) {
     var jobId = job.jobId;

@@ -9,12 +9,22 @@ app.factory('Auth',['FURL', '$firebaseAuth', '$firebaseObject', '$rootScope',
 	var Auth = {
 		user: {},
 
-    createProfile: function(uid, user) {
-      var profile = {
-        name: user.name,
-        email: user.email,
-        gravatar: get_gravatar(user.email, 40)
-      };
+    createProfile: function(uid, user, provider) {
+      var profile = {};
+      if(provider === 'email') {
+          profile = {
+          name: user.name,
+          email: user.email,
+          gravatar: get_gravatar(user.email, 40)
+        };
+      } else {
+          profile = {
+          name: user.facebook.displayName,
+          email: user.facebook.email,
+          gravatar: user.facebook.profileImageURL
+        };
+      }
+      
       var profileRef = ref.child('profile').child(uid);
       return profileRef.set(profile);
     },
@@ -33,7 +43,7 @@ app.factory('Auth',['FURL', '$firebaseAuth', '$firebaseObject', '$rootScope',
         })
         .then(function(data) {
           // store user data in Firebase after creating account
-          return Auth.createProfile(data.uid, user);
+          return Auth.createProfile(data.uid, user, 'email');
         });
     },
 
@@ -42,7 +52,10 @@ app.factory('Auth',['FURL', '$firebaseAuth', '$firebaseObject', '$rootScope',
     },
 
     authWithOAuthPopup: function(provider) {
-      return auth.$authWithOAuthPopup(provider);
+      return auth.$authWithOAuthPopup(provider, {remember: "sessionOnly", scope: "email"})
+                    .then(function(authData) {
+                      return Auth.createProfile(authData.uid, authData);
+             });
     },
 
 		changePassword: function(email, oldPass, newPass) {      

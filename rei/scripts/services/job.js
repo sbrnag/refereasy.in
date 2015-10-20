@@ -1,6 +1,7 @@
 'use strict';
 
-app.factory('Job',['FURL', 'Auth', '$firebaseArray', '$firebaseObject', function(FURL, Auth, $firebaseArray, $firebaseObject) {
+app.factory('Job',['FURL', 'Auth', '$firebaseArray', '$firebaseObject', '$q',
+	            function(FURL, Auth, $firebaseArray, $firebaseObject, $q) {
 
     var currentUser = Auth.user;
 	var ref = new Firebase(FURL);
@@ -25,30 +26,17 @@ app.factory('Job',['FURL', 'Auth', '$firebaseArray', '$firebaseObject', function
 
 		createJob: function(job) {
 			job.datetime = Firebase.ServerValue.TIMESTAMP;
-			var profileImage = currentUser.profile.gravatar;
-			if(profileImage == 'undefined' || profileImage == null) {
-			    profileImage = currentUser.facebook.profileImageURL;
-			}
-			job.gravatar = profileImage;
-			var profileName = currentUser.profile.name;
-			if(profileName == 'undefined' || profileName == null) {
-                profileName = currentUser.facebook.displayName;
-			}
-	        job.poster = profileName;
+			job.gravatar = currentUser.profile.gravatar;
+			job.poster = currentUser.profile.name;
 	        job.uid = currentUser.uid;
 
 	        return jobs.$add(job).then(function(newJob) {
-
-				// Create User-Jobs 
-				var userJob = {
-					jobId: newJob.key(),
-					title: job.title,
-					gravatar: job.gravatar,
-					datetime: job.datetime
-				};
-
-                var userJobs = $firebaseArray(ref.child('user_jobs').child(currentUser.uid));
-				return userJobs.$add(userJob);
+                
+                var userJob = $firebaseObject(ref.child('user_jobs').child(currentUser.uid).child(newJob.key()));
+				userJob.title = job.title;
+				userJob.gravatar = job.gravatar;
+				userJob.datetime = job.datetime;
+				return userJob.$save();
 			});
 		},
 
@@ -69,6 +57,7 @@ app.factory('Job',['FURL', 'Auth', '$firebaseArray', '$firebaseObject', function
 			var job = this.getJob(jobId);
 			return job.$remove();
 		}
+
 	};
 
 	return Job;

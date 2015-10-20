@@ -9,7 +9,7 @@ var app = angular
     'toaster',
     'angularMoment'
   ])
-  .constant('FURL', 'https://ric1.firebaseio.com/')
+  .constant('FURL', 'https://rerereasyapp.firebaseio.com/')
 
   .run(function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
@@ -72,6 +72,11 @@ var app = angular
       .when('/job/:jobId', {
         templateUrl: 'views/job.html',
         controller: 'JobController',
+        resolve: {
+          'currentAuth': ['Auth', function(Auth) {
+            return Auth.waitForAuth();
+          }]
+        }
       })
       .otherwise({
         redirectTo: '/landing'

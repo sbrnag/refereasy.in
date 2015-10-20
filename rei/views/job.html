@@ -1,14 +1,122 @@
 <div>
 
-<div ng-show="signedIn() && currentUser.uid == selectedJob.$id">
+<div ng-show="currentUser != null && currentUser.uid == selectedJob.uid">
 	Routed from my jobs
+    Job Details<br>
+	<div class="row">
+		
+		Referred by
+		<div class="list-group">
+			<div class="list-group-item">
+				<div class="row-picture">
+				    <img class="circle" ng-src="{{selectedJob.gravatar}}">
+			    </div> 
+			</div>
+			<div>
+				{{selectedJob.poster}} </br>
+				<span class="list-group-item-text">
+					<span am-time-ago="selectedJob.datetime"></span>
+				</span>	
+			</div>
+
+            <div>
+            	Skills :
+				{{selectedJob.skills}} 
+			</div>
+
+			<div>
+            	Experience :
+				{{selectedJob.exp}}+
+			</div>
+
+			<div>
+            	Location :
+				{{selectedJob.location}} 
+			</div>
+
+			<div>
+            	Company :
+				{{selectedJob.company}} 
+			</div>
+
+			<div>
+            	References Asked:
+				{{selectedJob.references}} 
+			</div>
+
+		</div>
+	</div>
 </div>
 
-<div ng-show="signedIn() && currentUser.uid != selectedJob.$id">
-	Routed from Browse Jobs
+<div ng-show="currentUser != null && currentUser.uid != selectedJob.uid">
+	Routed from browse jobs
+	Job Details<br>
+	<div class="row">
+		
+		Referred by
+		<div class="list-group">
+			<div class="list-group-item">
+				<div class="row-picture">
+				    <img class="circle" ng-src="{{selectedJob.gravatar}}">
+			    </div> 
+			</div>
+			<div>
+				{{selectedJob.poster}} </br>
+				<span class="list-group-item-text">
+					<span am-time-ago="selectedJob.datetime"></span>
+				</span>	
+			</div>
+
+            <div>
+            	Skills :
+				{{selectedJob.skills}} 
+			</div>
+
+			<div>
+            	Experience :
+				{{selectedJob.exp}}+
+			</div>
+
+			<div>
+            	Location :
+				{{selectedJob.location}} 
+			</div>
+
+			<div>
+            	Company :
+				{{selectedJob.company}} 
+			</div>
+
+		</div>
+	</div>
+
+	<div class="panel-body" ng-hide="selectedJob.references[currentUser.uid]">
+          <form ng-submit="referMe(selectedJob.$id, selectedJob.uid)">   
+            <input ng-model="shortProfile.handsonskills" class="form-control" placeholder="Skills worked on" required>
+            <br>           
+            <input type="text" ng-model="shortProfile.havingknowledgeskills" class="form-control" placeholder="Skills having knowledge" required>
+            <br>          
+            <input type="number" ng-model="shortProfile.totalexp" class="form-control" placeholder="Total experience in years" required>
+            <br>
+            <input type="text" ng-model="shortProfile.currentlocation" class="form-control" placeholder="Current Location" required>
+            <br>
+            <input type="text" ng-model="shortProfile.desiredlocation" class="form-control" placeholder="Desired Location" required>
+            <br>
+            <input type="text" ng-model="shortProfile.currentcompany" class="form-control" placeholder="Current Company">
+            <br>
+            <input type="number" ng-model="shortProfile.noticeperiod" class="form-control" placeholder="Can join in days" required>
+            <br>
+            <!-- <div class="col-xs-3">
+                <div fb-share="myModel.Url"></div>
+            </div> -->
+            upload resume check to google drive....
+            <input type="submit" value="Referme" class="btn btn-warning">
+          </form>
+    </div>
+
 </div>
 
-<div ng-show="!signedIn()">
+<div ng-show="currentUser == null">
 	Routed from outside
 </div>
 

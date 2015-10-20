@@ -1,55 +1,30 @@
 'use strict';
 
-app.factory('Ref',['FURL', 'Auth', '$firebaseArray', '$firebaseObject', function(FURL, Auth, $firebaseArray, $firebaseObject) {
+app.factory('Ref',['FURL', '$firebaseArray', '$firebaseObject', '$q',
+	            function(FURL, $firebaseArray, $firebaseObject, $q) {
 
-    var currentUser = Auth.user;
 	var ref = new Firebase(FURL);
 	
-
-	var Ref = {
-
-		getReferences: function(jobId) {
-			var references = $firebaseArray(ref.child('references').child(jobId));
-			return references;
-		},
-
-		getReference: function(jobId, refId) {
-			var reference = $firebaseObject(ref.child('references').child(jobId).child(refId));
-			return reference;
-		},
-
-		getUserReferences: function(uId) {
-			var references = $firebaseArray(ref.child('user_references').child(uId));
-			return references;
-		},
-
-		saveReference: function(jobId) {
-
-			// Create Ref Obj
-			var reference = {
-				sId: currentUser.uid
-			};
-
-            var references = $firebaseArray(ref.child('references').child(jobId));
-		    return references.$add(reference).then(function(newReference) {
-
-				var userReference = {
-					refId: newReference.key()
-				};
-
-                var userReferences = $firebaseArray(ref.child('user_references').child(currentUser.uid).child(jobId));
-				return userReferences.$add(userReference);
-			});
-			
-		},
-
-		deleteReference: function(refId) {
-			var ref = this.getReferences(refId);
-			return ref.$remove();
+	var Reference = {
+		
+		askReference: function(jobId, jobPosterId, uId) {
+		   var def = $q.defer();
+		   //save first userReference if some error happens alos file poster will know that some
+		   //user wants reference
+		   var userReferences = ref.child("/user_jobs/" + jobPosterId + "/" + jobId + "/references/" + uId);
+           userReferences.set(true, function(err) {
+    			if( err ) { 
+    				def.reject(err); 
+    			} else { 
+    				var jobReferences =  ref.child("/jobs/" + jobId + "/references/" + uId);
+    				jobReferences.set(true);
+    				def.resolve(); 
+    			}
+  			});
+           return def.promise;
 		}
 	};
 
-	return Ref;
+	return Reference;
 
 }]);
-	

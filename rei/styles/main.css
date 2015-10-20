@@ -179,3 +179,7 @@ a.button {
 a.button.block {
     text-align: center;
 }
+
+.appliedJob {
+  background-color: Gray;         
+}

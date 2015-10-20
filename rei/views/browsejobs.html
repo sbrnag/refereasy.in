@@ -49,7 +49,7 @@
 				        <tr>
 				        	<th>Reffered By</th><th>Skills</th><th>Experience</th><th>Location</th><th>Company</th>
 				        </tr>
-					    <tr ng-repeat="job in jobs | filter:search | orderBy: 'datetime':true" ng-hide="job.uid == uid" ng-click="jobLink(job.$id)">
+					    <tr ng-repeat="job in jobs | filter:search | orderBy: 'datetime':true" ng-hide="job.uid == uid" ng-click="jobLink(job.$id)" ng-class="job.references[uid] ? 'appliedJob' : ''">
 					    	
 							    <td>
 							      	<div class="list-group-item">
@@ -70,6 +70,7 @@
 							    <td>{{job.exp}}</td>
 							    <td>{{job.location}}</td>
 							    <td>{{job.company}}</td>
+
 						</tr>
 			        </table>
 				</div>

@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('PopUpController',['$scope', 'Job', 'toaster', '$location', 'Ref', 
-	                                function($scope, Job, toaster, $location, Ref) {
+app.controller('PopUpController',['$scope', 'Job', 'toaster', '$location',
+	                                function($scope, Job, toaster, $location) {
    
 	$scope.postJob = function() {	
 
@@ -18,14 +18,5 @@ app.controller('PopUpController',['$scope', 'Job', 'toaster', '$location', 'Ref'
 		toaster.pop('success', "Job is updated.");
 		$location.path('/myjobs/');
 	};
-
-	$scope.askReference = function() {
-	    Ref.saveReference($scope.jobId).then(function() {
-	      toaster.pop('success', "Reference Request Made successfully.");
-	      $location.path('/browsejobs/');
-	    }, function(err) {
-	            errMessage(err);      
-	       });
-    };
 
 }]);

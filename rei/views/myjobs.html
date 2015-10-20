@@ -13,16 +13,18 @@
 			    </div>	
 				</div>
 				<!-- TASK LIST -->	
-				<div ng-repeat="job in myJobs | filter: {title: searchJob} | orderBy: 'datetime':true">
+				<a ng-repeat="job in myJobs | filter: {title: searchJob} | orderBy: 'datetime':true" ng-href="#/job/{{job.$id}}">
 					<div class="list-group-item">
 				        <div class="row-picture">
 				            <img class="circle" ng-src="{{currentUser.password.profileImageURL || currentUser.facebook.profileImageURL}}">
 				        </div>
 				        <div class="row-content">
-				            <h4 class="list-group-item-heading">{{job.title | limitTo:25}}{{ task.title.length > 50? "..." : ""}}</h4>
+				            <h4 class="list-group-item-heading">{{job.title | limitTo:50}}{{ job.title.length > 50? "..." : ""}}</h4>
 				            <span class="list-group-item-text">
 				            	<span am-time-ago="job.datetime"></span>
 				            </span>	
+				            {{job.references}}
+				            {{Object.keys(job.references).length}}
 				        </div>
 				        <!-- <div class="row-content" style="display:none" showonhoverparent>
                                <span ng-click="setSelecetedJob(job)"><a class="btn btn-primary" href="" data-toggle="modal" data-target="#ediModal">Edit Job</a></span>
@@ -33,7 +35,7 @@
                         </div> -->
 				    </div>		    
 			    	<div class="list-group-separator"></div>
-		    	</div>
+		    	</a>
 		</div>
 
 	</div>
